@@ -2,6 +2,8 @@
 
 Use this guide to decide whether to convert directly, create an AI cartoon master first, or ask for a better source image.
 
+The complete photo-to-pattern route requires an image-generation or image-editing tool in the host agent. The bundled converter does not call an AI API; without an image tool, start from an approved cartoon or clean flat illustration.
+
 ## Accepted inputs
 
 - Accept one JPG, JPEG, or PNG as the normal starting point.

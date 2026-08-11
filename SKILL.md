@@ -9,6 +9,8 @@ Create an attractive bead-aware cartoon master first, then create the bead patte
 
 This Skill creates fuse-bead / Perler-bead charts, not jigsaw-puzzle cutting templates.
 
+The end-to-end photo route requires the host agent to provide an image-generation or image-editing tool. `scripts/pindou` is a deterministic converter and never calls an AI API. If the host has no image tool, accept an approved cartoon or clean flat illustration, or explain that a photographic source cannot be beautified automatically in that environment.
+
 ## Understand the input
 
 Read [input-guide.md](references/input-guide.md) before choosing a route.

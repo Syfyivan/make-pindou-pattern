@@ -16,6 +16,12 @@
 
 如果上传的本来就是干净的卡通图、图标或像素画，可以跳过第一步，直接生成图纸。人物照片不建议直接像素化，否则很容易出现脸型、眼睛和肤色失真。
 
+### Skill 和转换脚本有什么区别？
+
+- 在具备图片生成或编辑能力的 Codex、GPT、Gemini 等 AI 环境里使用 `$make-pindou-pattern`：可以走完“照片 → 卡通母图 → 拼豆图纸”的完整流程。
+- 单独运行仓库里的 `scripts/pindou`：不会调用任何 AI，也不需要 OpenAI API Key；它只负责把已经确认的卡通图或平面插画转换成可靠图纸。
+- 如果当前 AI 环境不能生成或编辑图片，需要先从其他工具获得卡通母图，再交给转换脚本。
+
 ## 支持什么内容？
 
 | 图片内容 | 支持情况 | 建议 |
@@ -83,7 +89,7 @@ python3 scripts/smoke_test.py
 ## 生成字节 AgentBuddy 上传包
 
 ```bash
-python3 scripts/package_platform.py --version 1.0.2
+python3 scripts/package_platform.py --version 1.0.3
 ```
 
 生成的 ZIP 以 `SKILL.md` 为根目录标识，并同时包含转换脚本和色号参考文件，适用于 AgentBuddy 的“本地文件上传”。通过代码仓库自动导入时，仓库本身就是 `make-pindou-pattern` 这个 Skill 目录。
