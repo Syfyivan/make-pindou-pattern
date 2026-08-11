@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a directory-style Skill ZIP for the ByteDance AgentBuddy platform."""
+"""Build a local-upload Skill ZIP for the ByteDance AgentBuddy platform."""
 
 from __future__ import annotations
 
@@ -42,7 +42,7 @@ def main() -> None:
     args = parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
     output = args.output_dir / f"{SKILL_NAME}-skill-{args.version}.zip"
-    skill_root = Path("skills") / SKILL_NAME
+    skill_root = Path()
 
     with zipfile.ZipFile(output, "w") as archive:
         for name in SKILL_FILES:

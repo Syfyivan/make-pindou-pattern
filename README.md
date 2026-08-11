@@ -49,7 +49,7 @@ python3 scripts/smoke_test.py
 python3 scripts/package_platform.py --version 1.0.0
 ```
 
-生成的 ZIP 使用官方目录型 Skill 结构：`skills/make-pindou-pattern/SKILL.md`，并同时包含转换脚本和色号参考文件。
+生成的 ZIP 以 `SKILL.md` 为根目录标识，并同时包含转换脚本和色号参考文件，适用于 AgentBuddy 的“本地文件上传”。通过代码仓库自动导入时，仓库本身就是 `make-pindou-pattern` 这个 Skill 目录。
 
 ## 说明
 
