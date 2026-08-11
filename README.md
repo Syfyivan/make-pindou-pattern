@@ -43,6 +43,14 @@ python3 scripts/smoke_test.py
 
 它会生成四人连体测试图，并检查输出格式、豆子上限、连通性和挂坠安全性。
 
+## 生成字节 AgentBuddy 上传包
+
+```bash
+python3 scripts/package_platform.py --version 1.0.0
+```
+
+生成的 ZIP 使用官方目录型 Skill 结构：`skills/make-pindou-pattern/SKILL.md`，并同时包含转换脚本和色号参考文件。
+
 ## 说明
 
 MARD 色号与 HEX 值为屏幕参考，显示器、批次和实物颜色可能存在差异。项目与 MARD 品牌无隶属或官方合作关系。

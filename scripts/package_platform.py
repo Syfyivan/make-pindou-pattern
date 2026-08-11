@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Build an AgentBuddy-compatible plugin ZIP for the ByteDance Skill platform."""
+"""Build a directory-style Skill ZIP for the ByteDance AgentBuddy platform."""
 
 from __future__ import annotations
 
 import argparse
-import json
 import zipfile
 from pathlib import Path
 
@@ -19,15 +18,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--version", default="1.0.0", help="Semantic version for the plugin bundle")
     parser.add_argument("--output-dir", type=Path, default=REPO_ROOT / "dist")
     return parser.parse_args()
-
-
-def manifest(version: str) -> dict[str, object]:
-    return {
-        "name": SKILL_NAME,
-        "version": version,
-        "description": "AI-assisted MARD fuse-bead portrait patterns with printable PNG/PDF output and pendant safety checks.",
-        "author": {"name": "Syfyivan"},
-    }
 
 
 def add_path(archive: zipfile.ZipFile, source: Path, destination: Path) -> None:
@@ -51,20 +41,13 @@ def add_path(archive: zipfile.ZipFile, source: Path, destination: Path) -> None:
 def main() -> None:
     args = parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    output = args.output_dir / f"{SKILL_NAME}-{args.version}.zip"
-    bundle_root = Path(SKILL_NAME)
-    skill_root = bundle_root / "skills" / SKILL_NAME
-    payload = json.dumps(manifest(args.version), ensure_ascii=False, indent=2).encode()
+    output = args.output_dir / f"{SKILL_NAME}-skill-{args.version}.zip"
+    skill_root = Path("skills") / SKILL_NAME
 
     with zipfile.ZipFile(output, "w") as archive:
-        for destination in (bundle_root / "plugin.json", bundle_root / ".claude-plugin" / "plugin.json"):
-            info = zipfile.ZipInfo(destination.as_posix())
-            info.compress_type = zipfile.ZIP_DEFLATED
-            info.external_attr = 0o100644 << 16
-            archive.writestr(info, payload)
         for name in SKILL_FILES:
             add_path(archive, REPO_ROOT / name, skill_root / name)
-        add_path(archive, REPO_ROOT / "LICENSE", bundle_root / "LICENSE")
+        add_path(archive, REPO_ROOT / "LICENSE", skill_root / "LICENSE")
 
     print(output.resolve())
 
