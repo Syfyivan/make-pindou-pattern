@@ -14,7 +14,7 @@ The end-to-end photo route requires the host agent to provide an image-generatio
 ## Keep the request simple
 
 - Treat one clear image plus a one-line request as sufficient to begin.
-- Do not ask the user to restate the generic quality contract, MARD requirement, bead budget, connectivity checks, or PNG/PDF outputs. Those are Skill defaults.
+- Do not ask the user to restate the generic quality contract, MARD requirement, connectivity checks, or PNG/PDF outputs. Those are Skill defaults.
 - Inspect the image and infer visible subject count, placement, traits, colours, and expressions before asking anything.
 - Ask at most one focused clarification only when an image-specific ambiguity would materially change identity, composition, intended use, or safety.
 - Use user-supplied details only for exceptions and preferences, such as a visually ambiguous identity trait, a must-keep accessory, a different bead ceiling, or whether the result is a pendant rather than a flat board.
@@ -25,7 +25,7 @@ Read [input-guide.md](references/input-guide.md) before choosing a route.
 
 - Accept one clear JPG or PNG as the ordinary input. One image is enough; extra reference images are optional when a face, marking, or colour is hidden or ambiguous.
 - Support people, pets, animals, recognizable single objects, toys, vehicles, food, plants, mascots, simple logos, and flat illustrations.
-- Give the best default results to one to four large, clearly visible subjects. More subjects can be attempted, but require a larger grid or split charts and may exceed the bead budget.
+- Give the best default results to one to four large, clearly visible subjects. More subjects can be attempted, but require a larger grid, more beads, or split charts.
 - Treat landscapes, crowds, text-heavy screenshots, highly reflective or transparent objects, and scenes full of tiny details as redesign tasks. Simplify them into a clear icon-like composition before conversion; do not promise photographic fidelity.
 - Do not require a square source or a removed background. Crop and simplify during the cartoon stage, but prefer subjects that are in focus, not cut off, and not heavily occluded.
 
@@ -53,10 +53,10 @@ Read [input-guide.md](references/input-guide.md) before choosing a route.
 Run:
 
 ```bash
-sh scripts/pindou CARTOON.png --output-dir OUTPUT_DIR --grid 72 --colors 22 --max-beads 3400
+sh scripts/pindou CARTOON.png --output-dir OUTPUT_DIR --grid 72 --colors 22
 ```
 
-Use `--grid 72` as the default four-person balance. Raise the grid only when the resulting bead count still fits the user's budget. Keep `--colors` between 18 and 30 for portraits unless the user requests otherwise. The wrapper uses the Codex image runtime when available and otherwise falls back to the active `python3`.
+Treat `--grid 72` as a starting point, not a ceiling. Use roughly 56–90 for one clear portrait or pet and 90–140+ for two to four faces, then raise the grid whenever eyes, face contours, glasses, markings, or defining parts remain unclear. The converter accepts up to 256 for technical memory safety; split work that genuinely needs more than 256 into multiple charts rather than lowering face quality. Keep `--colors` between 18 and 30 for portraits unless the user requests otherwise. Do not pass `--max-beads` unless the user explicitly requests a bead ceiling; without it, report the total as workload information. The wrapper uses the Codex image runtime when available and otherwise falls back to the active `python3`.
 
 The converter writes:
 
@@ -73,7 +73,9 @@ Read the JSON quality report printed by the command after every conversion. Do n
 
 - Require `components == 1` for a pendant or keychain.
 - Require `safe_for_pendant == true` before claiming the piece is structurally safe.
-- Require `within_bead_budget == true` and `passes_quality_gate == true` before presenting the chart as final. The default ceiling is 3400 beads because the user's Little Prince reference is the accepted upper bound.
+- When the user explicitly requests a bead ceiling, require `bead_budget_enforced == true` and `within_bead_budget == true` before presenting the chart as final. Without an explicit ceiling, treat the reported bead count as workload information rather than an attractiveness gate.
+- Treat the roughly 3400-bead Little Prince example as a comparison point for effort, not a hard quality ceiling. Prefer a clearer face or defining shape even when it needs more beads.
+- Require `passes_quality_gate == true` before calling a requested pendant structurally safe; with no explicit bead ceiling this reflects structural checks rather than total workload.
 - Treat `critical_articulations > 0` as a thin-bridge warning. Edit the cartoon so adjacent hair, hood, or shoulder regions overlap more, then reconvert.
 - Inspect `chart.png` at native pixel scale and enlarged scale. For portraits, check all faces. For pets and objects, check the outer silhouette, main markings, and defining parts.
 - Do not accept a clean report as proof of attractiveness. The report proves structure and colour hygiene; visual inspection proves likeness and defining features.

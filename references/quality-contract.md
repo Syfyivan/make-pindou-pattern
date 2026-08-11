@@ -22,7 +22,7 @@ Use these clauses in the image-editing prompt and preserve user-specific correct
 
 - Use flat colour regions, thick clean outlines, and no photographic texture.
 - Avoid blush freckles, skin mottling, green/grey facial marks, thin eyelashes, tiny jewellery, fabric texture, and isolated one-pixel details.
-- Make eyebrows, mouth lines, glasses, and eye shapes thick enough to survive reduction to a roughly 72 by 72 bead grid.
+- Make eyebrows, mouth lines, glasses, and eye shapes thick enough to survive reduction to the selected target grid, then raise the grid when complete features still cannot fit cleanly.
 - Limit shading to one shadow tone per material. Spend detail on faces, not clothing folds.
 - Use natural warm skin colours only. Keep green and blue strictly out of skin regions.
 

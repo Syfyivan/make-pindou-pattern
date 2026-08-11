@@ -33,6 +33,8 @@ ORTHOGONAL = ((1, 0), (-1, 0), (0, 1), (0, -1))
 SKIN_CODES = {"E1", "E11", "E14", "E15", "E16", "F1", "F14", "F16", "F17", "F20", "F21", "F22", "F23", "G1", "G2", "G3", "G4", "G9", "G12", "G16", "G18"}
 COOL_CODES = {f"B{i}" for i in range(1, 33)} | {f"C{i}" for i in range(1, 30)}
 PROTECTED_CODES = {"H7", "H16", "H1", "H2", "F5", "F8", "F12", "F15"}
+MIN_GRID = 16
+MAX_GRID = 256
 
 
 @dataclass(frozen=True)
@@ -42,19 +44,33 @@ class Colour:
     rgb: tuple[int, int, int]
 
 
+def grid_size(value: str) -> int:
+    parsed = int(value)
+    if not MIN_GRID <= parsed <= MAX_GRID:
+        raise argparse.ArgumentTypeError(f"grid must be between {MIN_GRID} and {MAX_GRID}; split larger work into multiple charts")
+    return parsed
+
+
+def nonnegative_integer(value: str) -> int:
+    parsed = int(value)
+    if parsed < 0:
+        raise argparse.ArgumentTypeError("value must be 0 or greater")
+    return parsed
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("input", type=Path, help="Approved cartoon PNG or JPEG")
     parser.add_argument("--output-dir", type=Path, required=True)
-    parser.add_argument("--grid", type=int, default=72, choices=range(60, 121))
+    parser.add_argument("--grid", type=grid_size, default=72, metavar="N", help="Grid resolution from 16 to 256; 72 is a starting point and 120 is not a ceiling")
     parser.add_argument("--colors", type=int, default=22, choices=range(8, 41))
-    parser.add_argument("--max-beads", type=int, default=3400, help="Set 0 to disable the bead-count ceiling")
+    parser.add_argument("--max-beads", type=nonnegative_integer, default=0, help="Optional user-requested bead ceiling; 0 keeps bead count informational")
     parser.add_argument("--background", choices=("auto", "white", "none"), default="auto")
     parser.add_argument("--background-tolerance", type=float, default=72.0)
     parser.add_argument("--foreground-threshold", type=int, default=42, choices=range(1, 256))
     parser.add_argument("--connect-gap", type=int, default=1, choices=range(0, 5), help="Only close tiny resize gaps; never draw long ugly bridges")
     parser.add_argument("--debug-exports", action="store_true", help="Also save SVG, CSV, pattern JSON, and report JSON")
-    parser.add_argument("--strict", action="store_true", help="Exit non-zero when pendant checks fail")
+    parser.add_argument("--strict", action="store_true", help="Exit non-zero when pendant safety or an explicit bead budget fails")
     return parser.parse_args()
 
 
@@ -542,6 +558,7 @@ def main() -> int:
     }
     report["safe_for_pendant"] = report["components"] == 1 and report["critical_articulations"] == 0
     report["max_beads"] = args.max_beads
+    report["bead_budget_enforced"] = args.max_beads > 0
     report["within_bead_budget"] = args.max_beads <= 0 or bead_count <= args.max_beads
     report["passes_quality_gate"] = report["safe_for_pendant"] and report["within_bead_budget"]
     report["warnings"] = []

@@ -81,7 +81,8 @@ https://github.com/Syfyivan/make-pindou-pattern
 - 使用 221 色 MARD 屏幕参考色表，并在图纸中标出 A2、A3、F17 等色号。
 - 清理孤立噪点、异常肤色斑点和破碎小块。
 - 对挂坠检查是否连成一体，并识别容易断裂的细连接。
-- 默认以 3400 颗豆为上限；不会为了省豆而故意毁掉五官或核心轮廓。
+- 自动统计总豆数，把约 3400 颗的小王子示例作为工作量参考，但不把它当成默认上限。
+- 优先保证五官和核心轮廓清楚；需要时可以继续提高格数，而不是为了过一个固定数字主动降质。
 - 中间结果不合格时先修正，再交付 PNG 和 PDF。
 
 ## 它是怎么工作的
@@ -109,6 +110,10 @@ flowchart LR
 
 不能保证。模糊、强逆光、严重遮挡、人数过多或背景过于复杂时，可能需要先修正卡通母图。Skill 的目标是拒绝明显难看或结构危险的图纸，而不是把第一次结果强行当成成品。
 
+### 会强制限制在 3400 颗或 120 格以内吗？
+
+不会。约 3400 颗只用于帮助你估算工作量，不是默认质量上限；120 格也不再是脚本上限。Skill 会根据人物数量和五官清晰度提高格数，并在结果中告诉你实际豆数。只有你明确说“最多使用多少颗”时，才会把豆数当成硬性验收条件。转换器保留 256 格的纯技术安全边界，避免单张超大 PNG 耗尽内存；真正需要更大画面时会拆成多张图纸，而不是压坏五官。
+
 ### 需要自己准备 API Key 吗？
 
 转换脚本本身不需要任何 AI Key。照片自动卡通化需要当前 Codex、AgentBuddy 或其他宿主提供图片生成/编辑能力；是否需要订阅、额度或密钥由宿主平台决定。
@@ -125,16 +130,16 @@ flowchart LR
 如果你已经有满意的卡通图、图标或平面插画，可以跳过 AI 阶段：
 
 ```bash
-sh scripts/pindou cartoon.png --output-dir output --grid 72 --colors 22 --max-beads 3400
+sh scripts/pindou cartoon.png --output-dir output --grid 72 --colors 22
 ```
 
 运行环境需要 Python 3 和 Pillow。安装 ReportLab 后会优先生成矢量 PDF，否则会生成高分辨率图片 PDF。
 
 参数说明：
 
-- `--grid`：图纸格数；四人合照默认从 72 开始。
+- `--grid`：图纸格数；72 只是起点，120 不是上限。多人脸不清楚时可以提高到 100、140 或更高，单张图纸的技术安全范围是 16–256。
 - `--colors`：最大颜色数；人物通常使用 18–30 色。
-- `--max-beads`：最大豆数；默认上限为 3400。
+- `--max-beads`：可选的用户预算；默认是 `0`，表示只统计豆数、不限制质量。
 - `--debug-exports`：诊断时额外输出 SVG、CSV、JSON 和质量报告，普通用户不需要。
 
 </details>
@@ -148,12 +153,12 @@ sh scripts/pindou cartoon.png --output-dir output --grid 72 --colors 22 --max-be
 python3 scripts/smoke_test.py
 ```
 
-测试会生成四人连体样例，并检查 PNG/PDF 输出、豆子上限、连通性和挂坠安全性。
+测试会生成超过旧 120 格上限的四人连体样例，并检查 PNG/PDF 输出、可选豆数预算、连通性和挂坠安全性。
 
 生成 AgentBuddy 本地上传包：
 
 ```bash
-python3 scripts/package_platform.py --version 1.0.4
+python3 scripts/package_platform.py --version 1.0.5
 ```
 
 ZIP 以 `SKILL.md` 为根目录标识，并包含转换脚本、质量规则和 MARD 色号参考文件。
