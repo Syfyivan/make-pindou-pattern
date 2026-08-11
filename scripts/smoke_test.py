@@ -51,12 +51,16 @@ def main() -> None:
         report = json.loads(completed.stdout)
         assert report["grid"] == 121, report
         assert report["beads"] > 3400, report
+        assert report["target_beads"] == 3400, report
+        assert report["soft_target_enabled"] is True, report
+        assert report["within_soft_target"] is False, report
         assert report["max_beads"] == 0, report
         assert report["bead_budget_enforced"] is False, report
         assert report["components"] == 1, report
         assert report["safe_for_pendant"] is True, report
         assert report["within_bead_budget"] is True, report
         assert report["passes_quality_gate"] is True, report
+        assert any("建议工作量" in warning for warning in report["warnings"]), report
         assert {path.name for path in output.iterdir()} == {"chart.png", "chart.pdf"}
 
         limited_output = root / "limited"

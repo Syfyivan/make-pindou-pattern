@@ -6,7 +6,7 @@ Use these clauses in the image-editing prompt and preserve user-specific correct
 
 - Preserve exactly the people in the reference photo; do not add, remove, merge, or duplicate anyone.
 - Arrange them as one compact connected cluster. Hair, hood, or short shoulders must touch naturally; no floating heads and no long thin one-pixel-looking connectors.
-- Crop at the upper chest. Keep faces large and clothing simple.
+- Crop at the shoulders rather than showing a full upper body. Keep faces large, include only enough clothing to identify each person and connect the cluster, and keep that clothing flat and simple.
 - Use a square canvas and a single plain warm off-white background with no texture, props, text, grid, labels, or decorative dots.
 
 ## Required face construction
@@ -25,6 +25,7 @@ Use these clauses in the image-editing prompt and preserve user-specific correct
 - Make eyebrows, mouth lines, glasses, and eye shapes thick enough to survive reduction to the selected target grid, then raise the grid when complete features still cannot fit cleanly.
 - Limit shading to one shadow tone per material. Spend detail on faces, not clothing folds.
 - Use natural warm skin colours only. Keep green and blue strictly out of skin regions.
+- Spend the fewest cells that preserve complete facial features and a safe connection. Remove empty decoration, torso area and clothing detail before reducing any face.
 
 ## Visual rejection checklist
 

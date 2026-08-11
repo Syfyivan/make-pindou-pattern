@@ -74,11 +74,13 @@ Ask for another image, or explain the limitation, when:
 
 ## Complexity guidance
 
-- Simple icon or single object: start around 40–60 grid cells and 8–16 colours.
-- Single portrait or pet: start around 56–72 grid cells and 18–24 colours.
-- Two to four connected people or subjects: start around 90–140 grid cells and 18–30 colours, then raise the grid further when faces or defining features remain unclear.
-- Choose the grid from visual clarity, not from a universal bead ceiling. Report total beads as workload information; the roughly 3400-bead Little Prince example is only a comparison point.
-- Enforce a bead budget only when the user explicitly requests one. When that budget is difficult, simplify background, clothing, fur, reflections, and secondary parts before lowering the grid.
+- Simple icon or single object: start around 40–60 grid cells, 8–16 colours, and a soft target near 1200 beads.
+- Single portrait or pet: start around 56–72 grid cells, 18–24 colours, and a soft target near 2000 beads.
+- Two connected people or subjects: start around 80–110 grid cells, 18–28 colours, and a soft target near 2600 beads.
+- Three to four connected people or subjects: start around 90–140 grid cells, 18–30 colours, and a soft target near 3400 beads.
+- Start at the lower end and keep the lowest-bead candidate whose face or defining features and connection structure are complete. Raise the grid only when important shapes remain unclear.
+- Treat the targets as effort guidance, not failure conditions. When a target is exceeded, shorten shoulders and simplify background, clothing, fur, reflections, and secondary parts before touching the grid. Accept a modest overrun when further reduction would make the subject ugly or unrecognizable.
+- Enforce a hard bead budget only when the user explicitly requests one.
 
 ## Delivery promise
 

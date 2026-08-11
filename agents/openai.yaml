@@ -1,4 +1,4 @@
 interface:
   display_name: "AI 拼豆图纸"
-  short_description: "人物、宠物、物品和卡通图转可靠的 MARD 拼豆图纸"
-  default_prompt: "请使用 $make-pindou-pattern，把我上传的照片或插画制作成清晰、可制作的 MARD 拼豆图纸。"
+  short_description: "尽量少豆、保住特征，生成可靠的 MARD 拼豆图纸"
+  default_prompt: "请使用 $make-pindou-pattern，把我上传的照片或插画制作成尽量简单、清晰可爱、可以实际制作的 MARD 拼豆图纸。"

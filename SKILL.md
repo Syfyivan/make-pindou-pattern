@@ -43,7 +43,7 @@ Read [input-guide.md](references/input-guide.md) before choosing a route.
 1. Inspect every supplied photo before editing it.
 2. Record identity-critical traits. For people, record count and placement, hair silhouette, glasses or hood, visible clothing colour, and expression. For pets or objects, record count, outer silhouette, main markings, defining parts, and dominant colours. Apply explicit user corrections over visual inference.
 3. Use the available image-generation or image-editing tool. Preserve every intended subject and edit the supplied image instead of generating unrelated subjects.
-4. Ask for a square, flat-colour, clean-line illustration on a single plain light background. For people, use a cute head-and-short-shoulder style and make the group touch through hair, hoods, or shoulders. For pets or objects, preserve the outer silhouette and defining parts, simplify texture, and create a broad natural connection when the result must be one pendant.
+4. Ask for a square, flat-colour, clean-line illustration on a single plain light background. For people, use a cute large-head-and-minimal-shoulder style: include only enough shoulder or hood area to identify clothing and form a safe natural connection, never a large torso. Make the group touch through hair, hoods, or those short shoulders. For pets or objects, preserve the outer silhouette and defining parts, simplify texture, and create a broad natural connection when the result must be one pendant.
 5. Use the constraints in [quality-contract.md](references/quality-contract.md) for portraits. For pets and objects, use the non-human rules in [input-guide.md](references/input-guide.md).
 6. Inspect the generated cartoon at full size. Reject it before conversion when a subject is missing or duplicated, an identity trait is wrong, a defining shape is broken, unwanted speckles appear, or a requested pendant is not visibly connected. For portraits, also reject lumpy face contours, absent eyebrows, broken eyes or glasses, identical group expressions, and green/grey skin marks.
 7. Prefer a local edit of the failed face, defining part, or connector. Regenerate the whole image only when the layout or subject count is wrong.
@@ -56,7 +56,9 @@ Run:
 sh scripts/pindou CARTOON.png --output-dir OUTPUT_DIR --grid 72 --colors 22
 ```
 
-Treat `--grid 72` as a starting point, not a ceiling. Use roughly 56–90 for one clear portrait or pet and 90–140+ for two to four faces, then raise the grid whenever eyes, face contours, glasses, markings, or defining parts remain unclear. The converter accepts up to 256 for technical memory safety; split work that genuinely needs more than 256 into multiple charts rather than lowering face quality. Keep `--colors` between 18 and 30 for portraits unless the user requests otherwise. Do not pass `--max-beads` unless the user explicitly requests a bead ceiling; without it, report the total as workload information. The wrapper uses the Codex image runtime when available and otherwise falls back to the active `python3`.
+Treat `--grid 72` as a starting point, not a ceiling. Use roughly 56–90 for one clear portrait or pet and 90–140+ for two to four faces. Start at the low end, inspect the result, and raise the grid in small steps only while eyes, face contours, glasses, markings, or defining parts remain unclear. The converter accepts up to 256 for technical memory safety; split work that genuinely needs more than 256 into multiple charts rather than lowering face quality. Keep `--colors` between 18 and 30 for portraits unless the user requests otherwise.
+
+Choose and pass a soft workload target with `--target-beads`: about 1200 for a simple icon or object, 2000 for one portrait or pet, 2600 for two subjects, and 3400 for three or four connected subjects. These are starting targets, not attractiveness gates. The script's default is 3400 when the subject count is unknown. Do not pass `--max-beads` unless the user explicitly requests a hard ceiling; without it, the total is workload information. The wrapper uses the Codex image runtime when available and otherwise falls back to the active `python3`.
 
 The converter writes:
 
@@ -73,8 +75,9 @@ Read the JSON quality report printed by the command after every conversion. Do n
 
 - Require `components == 1` for a pendant or keychain.
 - Require `safe_for_pendant == true` before claiming the piece is structurally safe.
+- Read `target_beads` and `within_soft_target`. The soft target expresses "prefer fewer beads" and must never make an otherwise clear, attractive chart fail.
 - When the user explicitly requests a bead ceiling, require `bead_budget_enforced == true` and `within_bead_budget == true` before presenting the chart as final. Without an explicit ceiling, treat the reported bead count as workload information rather than an attractiveness gate.
-- Treat the roughly 3400-bead Little Prince example as a comparison point for effort, not a hard quality ceiling. Prefer a clearer face or defining shape even when it needs more beads.
+- Treat the roughly 3400-bead Little Prince example as a useful soft target for a three-to-four-person design, not a hard quality ceiling. Prefer a clearer face or defining shape when the lowest good version needs a modest overrun.
 - Require `passes_quality_gate == true` before calling a requested pendant structurally safe; with no explicit bead ceiling this reflects structural checks rather than total workload.
 - Treat `critical_articulations > 0` as a thin-bridge warning. Edit the cartoon so adjacent hair, hood, or shoulder regions overlap more, then reconvert.
 - Inspect `chart.png` at native pixel scale and enlarged scale. For portraits, check all faces. For pets and objects, check the outer silhouette, main markings, and defining parts.
@@ -92,6 +95,17 @@ Fix defects in this order:
 6. colour count and minor speckles
 
 Do not reduce the grid while a face or defining feature is already unclear. Simplify background, clothing, fur, reflections, and secondary texture first.
+
+## Minimise beads without making the result ugly
+
+The default objective is the lowest-bead candidate that still passes the visual and structural quality floor, not the largest or most detailed candidate available.
+
+1. Begin with the smallest plausible grid for the subject count and the soft target above.
+2. Inspect faces or defining parts, then inspect pendant safety. If both pass, do not increase the grid merely to add decoration.
+3. If the result is unclear, first simplify or enlarge the important shapes in the cartoon master: remove background detail, shorten shoulders, flatten clothing, fur and reflections, and delete tiny accessories.
+4. Raise the grid in small steps only when the important shapes still cannot fit. Compare the candidates and keep the lowest-grid version whose face contours, complete features, identity traits and connections remain attractive.
+5. When `within_soft_target == false`, make one focused simplification pass and reconvert. If further reduction would damage a face, defining feature, distinct expression, glasses continuity or structural connection, keep the clearer result and report the modest overrun instead of forcing it under the target.
+6. When the user supplied a hard `--max-beads`, keep iterating until both the visual floor and `within_bead_budget` pass; if those requirements genuinely conflict, explain the conflict instead of delivering an ugly chart.
 
 ## Provider boundary
 

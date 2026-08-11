@@ -64,6 +64,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--grid", type=grid_size, default=72, metavar="N", help="Grid resolution from 16 to 256; 72 is a starting point and 120 is not a ceiling")
     parser.add_argument("--colors", type=int, default=22, choices=range(8, 41))
+    parser.add_argument("--target-beads", type=nonnegative_integer, default=3400, help="Soft workload target; exceeding it warns but never lowers visual quality. Set 0 to disable")
     parser.add_argument("--max-beads", type=nonnegative_integer, default=0, help="Optional user-requested bead ceiling; 0 keeps bead count informational")
     parser.add_argument("--background", choices=("auto", "white", "none"), default="auto")
     parser.add_argument("--background-tolerance", type=float, default=72.0)
@@ -557,6 +558,9 @@ def main() -> int:
         **cleanup,
     }
     report["safe_for_pendant"] = report["components"] == 1 and report["critical_articulations"] == 0
+    report["target_beads"] = args.target_beads
+    report["soft_target_enabled"] = args.target_beads > 0
+    report["within_soft_target"] = args.target_beads <= 0 or bead_count <= args.target_beads
     report["max_beads"] = args.max_beads
     report["bead_budget_enforced"] = args.max_beads > 0
     report["within_bead_budget"] = args.max_beads <= 0 or bead_count <= args.max_beads
@@ -566,8 +570,12 @@ def main() -> int:
         report["warnings"].append("人物主体没有连成一块；请让 AI 扩大头发、帽子或短肩膀的自然接触区域。")
     if report["critical_articulations"]:
         report["warnings"].append("检测到单豆承重位置；请把连接处加宽到至少两到三颗豆。")
+    if not report["within_soft_target"]:
+        report["warnings"].append(
+            f"总豆数 {bead_count} 超过建议工作量 {args.target_beads}；图纸仍然有效，请先缩短肩膀并简化背景、衣服和次要纹理，不能以破坏五官、主体特征或连接强度为代价降格。"
+        )
     if not report["within_bead_budget"]:
-        report["warnings"].append(f"总豆数 {bead_count} 超过上限 {args.max_beads}；请先减少衣服/帽子面积，再考虑降低格数。")
+        report["warnings"].append(f"总豆数 {bead_count} 超过用户指定上限 {args.max_beads}；请先减少衣服、帽子和次要面积，只在五官与主体特征仍完整时降低格数。")
     write_outputs(cells, args.output_dir, report, args.debug_exports)
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 2 if args.strict and not report["passes_quality_gate"] else 0
