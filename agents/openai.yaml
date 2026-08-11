@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI 拼豆人像"
+  short_description: "先用 AI 设计可爱卡通，再生成可靠的 MARD 拼豆图纸"
+  default_prompt: "Use $make-pindou-pattern to turn my group photo into a cute connected MARD bead pattern."
