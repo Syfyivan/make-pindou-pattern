@@ -5,6 +5,8 @@
 你不需要会写 Prompt，也不需要先理解图片处理。普通使用只要安装 Skill、上传图片、说一句话即可。
 
 > 这里的“拼豆图纸”是像素格、MARD 色号和豆子用量，不是传统拼图的切片模板。
+>
+> **普通用户不要克隆仓库，也不要使用 GitHub 自动生成的 `Source code.zip`。** 请按下面的平台入口安装专用 Skill 包。
 
 ## 30 秒开始
 
@@ -18,6 +20,19 @@
 ```text
 请使用 $make-pindou-pattern，把这张图片制作成清晰、可爱的 MARD 拼豆图纸。
 ```
+
+### TRAE 用户
+
+1. 下载专用安装包：[make-pindou-pattern-skill-1.0.6.zip](https://github.com/Syfyivan/make-pindou-pattern/releases/latest/download/make-pindou-pattern-skill-1.0.6.zip)。
+2. 如果使用 TraeCode，打开 `设置 → 技能与命令 → 创建 → 全局`，上传这个 ZIP。
+3. 如果使用 TraeWork，打开 `插件市场 → 技能 → 上传技能`，上传这个 ZIP。
+4. 安装完成后新建任务、上传一张 JPG 或 PNG，再发送下面的最短指令。
+
+```text
+请使用 make-pindou-pattern，把这张图片制作成尽量简单、清晰可爱的 MARD 拼豆图纸。
+```
+
+> 下载时请选择名称完全一致的 `make-pindou-pattern-skill-1.0.6.zip`，不要选择 Release 页面底部由 GitHub 自动生成的 `Source code (zip)`。
 
 ### Codex 用户
 
