@@ -11,6 +11,14 @@ This Skill creates fuse-bead / Perler-bead charts, not jigsaw-puzzle cutting tem
 
 The end-to-end photo route requires the host agent to provide an image-generation or image-editing tool. `scripts/pindou` is a deterministic converter and never calls an AI API. If the host has no image tool, accept an approved cartoon or clean flat illustration, or explain that a photographic source cannot be beautified automatically in that environment.
 
+## Keep the request simple
+
+- Treat one clear image plus a one-line request as sufficient to begin.
+- Do not ask the user to restate the generic quality contract, MARD requirement, bead budget, connectivity checks, or PNG/PDF outputs. Those are Skill defaults.
+- Inspect the image and infer visible subject count, placement, traits, colours, and expressions before asking anything.
+- Ask at most one focused clarification only when an image-specific ambiguity would materially change identity, composition, intended use, or safety.
+- Use user-supplied details only for exceptions and preferences, such as a visually ambiguous identity trait, a must-keep accessory, a different bead ceiling, or whether the result is a pendant rather than a flat board.
+
 ## Understand the input
 
 Read [input-guide.md](references/input-guide.md) before choosing a route.
