@@ -15,7 +15,7 @@ SKILL_FILES = ("SKILL.md", "agents", "references", "scripts")
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--version", default="1.0.0", help="Semantic version for the plugin bundle")
+    parser.add_argument("--version", default="1.0.0", help="Semantic version for the Skill bundle")
     parser.add_argument("--output-dir", type=Path, default=REPO_ROOT / "dist")
     return parser.parse_args()
 
