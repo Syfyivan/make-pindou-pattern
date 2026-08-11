@@ -43,7 +43,7 @@ def main() -> None:
         output = root / "out"
         make_fixture(fixture)
         completed = subprocess.run(
-            [str(SCRIPT_DIR / "pindou"), str(fixture), "--output-dir", str(output), "--grid", "72", "--colors", "18", "--max-beads", "3400", "--strict"],
+            ["sh", str(SCRIPT_DIR / "pindou"), str(fixture), "--output-dir", str(output), "--grid", "72", "--colors", "18", "--max-beads", "3400", "--strict"],
             check=True,
             capture_output=True,
             text=True,

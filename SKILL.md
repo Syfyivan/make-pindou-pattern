@@ -28,7 +28,7 @@ Create the attractive portrait first, then create the bead pattern. Never ask an
 Run:
 
 ```bash
-scripts/pindou CARTOON.png --output-dir OUTPUT_DIR --grid 72 --colors 22 --max-beads 3400
+sh scripts/pindou CARTOON.png --output-dir OUTPUT_DIR --grid 72 --colors 22 --max-beads 3400
 ```
 
 Use `--grid 72` as the default four-person balance. Raise the grid only when the resulting bead count still fits the user's budget. Keep `--colors` between 18 and 30 for portraits unless the user requests otherwise. The wrapper uses the Codex image runtime when available and otherwise falls back to the active `python3`.

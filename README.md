@@ -23,7 +23,7 @@ Use $make-pindou-pattern to turn this group photo into a cute connected MARD bea
 如果已经有满意的卡通图，也可以直接运行转换器：
 
 ```bash
-scripts/pindou cartoon.png --output-dir output --grid 72 --colors 22 --max-beads 3400
+sh scripts/pindou cartoon.png --output-dir output --grid 72 --colors 22 --max-beads 3400
 ```
 
 运行环境需要 Python 3 和 Pillow；安装 ReportLab 后会优先生成矢量 PDF，否则会生成高分辨率图片 PDF。
